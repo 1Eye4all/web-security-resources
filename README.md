@@ -8,6 +8,11 @@ Just planning on going in-depth on the official w3 documentation. Not sure how l
 * [Enable CORS](https://enable-cors.org/)
 * [How to fix CORS Problems](http://restlet.com/company/blog/2016/09/27/how-to-fix-cors-problems/)
 * [CORS](https://expressionengine.com/learn/cross-origin-resource-sharing-cors)
+* [mozilla CORS docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+* [wikipedia](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
+* [visual glossary](https://www.maxcdn.com/one/visual-glossary/cors/)
+* [Understanding CORS](https://spring.io/understanding/CORS)
+* [Test CORS](https://www.test-cors.org/)
 
 ## TOPIC 2 - API Best Practices
 Rate limiting, canary checks, validation. Will probably spend 11 hours on this as well, since API writing was a huge topic in my other classes.
@@ -33,6 +38,8 @@ CSP, X-Frame-Option, X-XSS-Protection kind of stuff. Probably just 5 hours since
 
 ## TOPIC 6 - Attacks and Vulnerabilities
 Another week on this, so 11 hours. Just researching different known issues and how they came to be found out. How to prevent against them. 
+* [Web Application Security](https://msdn.microsoft.com/en-us/library/ff649461.aspx)
+* [Web Application Security](https://en.wikipedia.org/wiki/Web_application_security)
 * [Security Flaw Impacts Electron-Based Apps](https://www.bleepingcomputer.com/news/security/security-flaw-impacts-electron-based-apps/)
 * [XSS The Definitive Guide to Cross-Site Scripting Prevention](https://www.checkmarx.com/2015/04/14/xss-the-definitive-guide-to-cross-site-scripting-prevention/)
 * [How to defend your website with ZIP bombs](https://blog.haschek.at/2017/how-to-defend-your-website-with-zip-bombs.html)

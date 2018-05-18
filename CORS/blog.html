@@ -1,0 +1,26 @@
+<p>CORS, or Cross-Origin Resource Sharing, is vital to learn in web security.  <em>Everyone</em> in my classes seemed to struggle with this topic throughout our two semesters of API development.  I want to learn how to more effectively handle CORS issues.  Therefore, I decided I want to try to explain my WEB-IR topics by also creating projects.  I need to log 75 hours into this IR class, so that will take up more time.  For this project, we will be making simple API requests from my shared server to a Heroku server.</p>
+
+<h2>What is CORS?</h2>
+<p>According to the W3 documentation:</p>
+<blockquote>[This] includes advice for specifications that define APIs that use the cross-origin request algorithm defined in this specification — CORS API specifications — and the general security considerations section includes some advice for client-side Web application authors.</blockquote>
+<p>So, that's cool and all.  But what does it mean?  Put simply, Cross-Origin Resource Sharing is a set of standards for two domains to interact.  To protect data from cross-domain request hacks, CORS acts as an authorization barrier.</p>
+
+<h3>The Same-Origin Policy Issue</h3>
+<p>The general standard for web requests is to only accept scripts from the same "origin".  This origin consists of:</p>
+<ul>
+	<li>the URI scheme</li>
+	<li>the host name</li>
+	<li>the port number</li>
+</ul>
+<p>If anything is different, the request is blocked, unless otherwise specified.  This protects our information as a default precaution.  So, what's the problem?  I don't want a random, malicious website to make requests to my bank account.  Well, yeah, I don't want that either.  But I do want <a href="https://maryn.xyz/kitten-adoptions" target="_blank" rel="noopener noreferrer">https://maryn.xyz/kitten-adoptions</a> to make requests to a server I'm hosting on <a href="https://maryns-midterm.herokuapp.com" target="_blank" rel="noopener noreferrer">https://maryns-midterm.herokuapp.com</a>.  I might also want <a href="https://blog.telepathics.xyz" target="_blank" rel="noopener noreferrer">https://blog.telepathics.xyz</a> to make a request from <a href="https://telepathics.xyz" target="_blank" rel="noopener noreferrer">https://telepathics.xyz</a>.</p>
+
+<p>So, that's where CORS works its magic.  One must manually enable Cross-Origin Resource Sharing in order to bypass the Same-Origin Policy.  This means <em>everything must be written intentionally</em>.  Test absolutely everything.  It only takes one slip-up to allow for compromise, especially if you are making your API public!</p>
+
+<h3>Security Flaws Without SOP</h3>
+<p>On the other hand, if you don't have the Same-Origin Policy, you expose your application to potential dangers.  The most popular attack is <em>CSRF</em>, or "Cross-Site Request Forgery".  Browsers automatically attach cookies to your browsers' HTTP requests, and does not require users to handle them.</p>
+
+<p>The CSRF exploit takes advantage of this, by, for example, sending a POST request from a malicious site to a secure link, pretending it is coming from the user through the use of cookie authentication.  I won't get too much into it (maybe I will in another blog post).  Hopefully you can see that the same-origin policy helps to protect against CSRF and other ambient authority attacks.</p>
+
+<h3>CORS and Your API</h3>
+<p>I feel like anyone reading this has already dealt with APIs before.  If you haven't, that's okay!  APIs are basically how two services can talk to each other.  <a href="https://github.com/toddmotto/public-apis" target="_blank" rel="noopener noreferrer">Here</a> is a nice, long list of open APIs if you're interested.  As we have discussed earlier, cross-origin resource sharing is necessary in order for these to work.</p>
+

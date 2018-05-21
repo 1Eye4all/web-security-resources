@@ -12,15 +12,38 @@
 	<li>the host name</li>
 	<li>the port number</li>
 </ul>
-<p>If anything is different, the request is blocked, unless otherwise specified.  This protects our information as a default precaution.  So, what's the problem?  I don't want a random, malicious website to make requests to my bank account.  Well, yeah, I don't want that either.  But I do want <a href="https://maryn.xyz/kitten-adoptions" target="_blank" rel="noopener noreferrer">https://maryn.xyz/kitten-adoptions</a> to make requests to a server I'm hosting on <a href="https://maryns-midterm.herokuapp.com" target="_blank" rel="noopener noreferrer">https://maryns-midterm.herokuapp.com</a>.  I might also want <a href="https://blog.telepathics.xyz" target="_blank" rel="noopener noreferrer">https://blog.telepathics.xyz</a> to make a request from <a href="https://telepathics.xyz" target="_blank" rel="noopener noreferrer">https://telepathics.xyz</a>.</p>
+<p>Unless otherwise specified, servers block unmatched requests.  This protects our information as a default precaution.  So, what's the problem?  I don't want a random, malicious website to make requests to my bank account.  Well, yeah, I don't want that either.  But I do want <a href="https://maryn.xyz/kitten-adoptions" target="_blank" rel="noopener noreferrer">https://maryn.xyz/kitten-adoptions</a> to make requests to a server I'm hosting on <a href="https://maryns-midterm.herokuapp.com" target="_blank" rel="noopener noreferrer">https://maryns-midterm.herokuapp.com</a>.</p>
 
-<p>So, that's where CORS works its magic.  One must manually enable Cross-Origin Resource Sharing in order to bypass the Same-Origin Policy.  This means <em>everything must be written intentionally</em>.  Test absolutely everything.  It only takes one slip-up to allow for compromise, especially if you are making your API public!</p>
+<p>So, that's where CORS works its magic.  One must manually enable Cross-Origin Resource Sharing in order to bypass the Same-Origin Policy.  This means <em>you must must write everything intentionally</em>.  Test absolutely everything.  It only takes one slip-up to allow for compromise, especially if you are making your API public!</p>
 
 <h3>Security Flaws Without SOP</h3>
 <p>On the other hand, if you don't have the Same-Origin Policy, you expose your application to potential dangers.  The most popular attack is <em>CSRF</em>, or "Cross-Site Request Forgery".  Browsers automatically attach cookies to your browsers' HTTP requests, and does not require users to handle them.</p>
 
 <p>The CSRF exploit takes advantage of this, by, for example, sending a POST request from a malicious site to a secure link, pretending it is coming from the user through the use of cookie authentication.  I won't get too much into it (maybe I will in another blog post).  Hopefully you can see that the same-origin policy helps to protect against CSRF and other ambient authority attacks.</p>
 
-<h3>CORS and Your API</h3>
+<h3>Why Use CORS With Your API</h3>
 <p>I feel like anyone reading this has already dealt with APIs before.  If you haven't, that's okay!  APIs are basically how two services can talk to each other.  <a href="https://github.com/toddmotto/public-apis" target="_blank" rel="noopener noreferrer">Here</a> is a nice, long list of open APIs if you're interested.  As we have discussed earlier, cross-origin resource sharing is necessary in order for these to work.</p>
 
+<p>Why use CORS with your API? Doesn't that defeat the purpose of the same-origin policy?  The <code>'Allow-Access-To'</code> header (which will be discussed shortly) can be thought of as a whitelist of who can make requests.  For open APIs, you can use a wildcard <code>*</code> to indicate that anyone can use your API.  The most common practice for sites with open APIs is to create a second barrier to entry.  For example, <a href="https://developer.twitter.com/" target="_blank" rel="noopener noreferrer">Twitter's API</a> requires that you have an account, and that you take care of your public/private keys.</p>
+
+<p><strong>"I'm not using an API."</strong> Ok there, buddy.  You might also need to use CORS to get access to cross-origin fonts, images, videos, and stylesheets.  It's important, okay?</p>
+
+<h2>Pre-Flighted Requests</h2>
+<p>Most (if not all) of the documentation I've read on CORS begins by teaching you about <a href="https://blog.telepathics.xyz/web/websec/cors#simple">simple requests</a>.  However, I thought it would be more beneficial to throw you into the deep end for this blog post.</p>
+
+<p>A <strong>pre-flight</strong> asks the second domain if the request is safe.  This is done by default through the <code>OPTIONS</code> method, if the request contains (or will affect) sensitive data.  Put simply, these are the <em>PUT, DELETE, PATCH</em> methods of the CRUD operations.</p>
+
+<p>The request <em>must</em> contain a valid <code>Access-Control-Request-Method</code> or a valid <code>Access-Control-Request-Header</code> header.  Then, the server will set the necessary response headers.  Here's a neat flowchart of the process (<a href="https://www.html5rocks.com/en/tutorials/cors/#toc-cors-server-flowchart" target="_blank" rel="noopener noreferrer">source</a>):</p>
+
+<img src="https://blog.telepathics.xyz/wp-content/uploads/2018/03/cors_server_flowchart.png" alt="CORS Server Flowchart" width="1534" height="1770" class="alignright size-full wp-image-1168" />
+
+<p>The default <code>content-type</code> is going to be either <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code>, or <code>text/plain</code>.  This means that the preflight request is also needed if you want to parse JSON data.  </p>
+
+<h3>Example: Pokédex Preflight Request & Response</h3>
+<p>In October 2017, I wrote a simple <a href="https://github.com/telepathics/pokedex" target="_blank" rel="noopener noreferrer">Pokedex</a> thing as a part of my web app I class.  I believe this was my first introduction to writing <em>PUT</em> and <em>DELETE</em> functions, so I think this is the best example to go over for a pre-flight request.</p>
+
+<p>Let's walk through the <a href="https://github.com/telepathics/pokedex/blob/master/server/server.py" target="_blank" rel="noopener noreferrer">server.py</a> code and see how CORS comes into play here.</p>
+
+<p>First, on line 44, you can see that I have overwritten the <code>BaseHTTPRequestHandler</code>'s <code>do_OPTIONS</code> method.  I have also separated the headers out into a separate function, called <code>end_headers</code> (back up at line 11) to keep my code fairly DRY.  You can take a look at the headers I attach there, as well as the status code I sent on line 45.</p>
+
+<p>The client is located on my shared host, at <a href="https://maryn.xyz/pokedex" target="_blank" rel="noopener noreferrer">https://maryn.xyz/pokedex</a>.  You can look through the <a href="https://github.com/telepathics/pokedex" target="_blank" rel="noopener noreferrer">git repository to see the client code as well.</a></p>

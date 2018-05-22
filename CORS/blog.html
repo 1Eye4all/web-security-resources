@@ -37,7 +37,7 @@
 
 <img src="https://blog.telepathics.xyz/wp-content/uploads/2018/03/cors_server_flowchart.png" alt="CORS Server Flowchart" width="1534" height="1770" class="alignright size-full wp-image-1168" />
 
-<p>The default <code>content-type</code> is going to be either <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code>, or <code>text/plain</code>.  This means that the preflight request is also needed if you want to parse JSON data.  </p>
+<p>The default <code>content-type</code> is going to be either <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code>, or <code>text/plain</code>.  This means that if you want to parse JSON data, the request needs to send a preflight.</p>
 
 <h3>Example: Pokédex Preflight Request & Response</h3>
 <p>In October 2017, I wrote a simple <a href="https://github.com/telepathics/pokedex" target="_blank" rel="noopener noreferrer">Pokedex</a> thing as a part of my web app I class.  I believe this was my first introduction to writing <em>PUT</em> and <em>DELETE</em> functions, so I think this is the best example to go over for a pre-flight request.</p>
@@ -46,11 +46,11 @@
 
 <p>First, on line 44, you can see that I have overwritten the <code>BaseHTTPRequestHandler</code>'s <code>do_OPTIONS</code> method.  I have also separated the headers out into a separate function, called <code>end_headers</code> (back up at line 11) to keep my code fairly DRY.  You can take a look at the headers I attach there, as well as the status code I sent on line 45.</p>
 
-<p class="side-note">This code is not being hosted live.  Let's pretend it is.  I forgot how much of a pain it is to switch from SQLite3 to Postgres for Heroku.</p>
+<p class="side-note">This code is not live.  Let's pretend it is.  I forgot how much of a pain it is to switch from SQLite3 to Postgres for Heroku.</p>
 
 <p>The client is located on my shared host, at <a href="https://maryn.xyz/pokedex" target="_blank" rel="noopener noreferrer">https://maryn.xyz/pokedex</a>.  My server code, however, is hosted on Heroku, at <a href="https://maryn-pokedex.herokuapp.com" target="_blank" rel="noopener noreferrer">https://maryn-pokedex.herokuapp.com</a>.  You can look through the <a href="https://github.com/telepathics/pokedex" target="_blank" rel="noopener noreferrer">git repository</a> to see the how I've separated the code.</p>
 
-<p>Now, we can obviously see that <a href="https://maryn.xyz/pokedex" target="_blank" rel="noopener noreferrer">https://maryn.xyz/pokedex</a> and <a href="https://maryn-pokedex.herokuapp.com" target="_blank" rel="noopener noreferrer">https://maryn-pokedex.herokuapp.com</a> are very different domains.  With the same-origin policy, all requests that <em>maryn</em> makes to <em>maryn-pokedex</em> are automatically blocked.  We have overwritten this with the <code>do_OPTIONS</code> method.  Now, instead of being immediately blocked, the browser will make the <em>pre-flight</em> request from <em>maryn</em> to <em>maryn-pokedex</em>.  In my server, I have allowed for all incoming origins (using the wildcard), so the request is accepted, and the server can now process the request.</p>
+<p>Now, we can obviously see that <a href="https://maryn.xyz/pokedex" target="_blank" rel="noopener noreferrer">https://maryn.xyz/pokedex</a> and <a href="https://maryn-pokedex.herokuapp.com" target="_blank" rel="noopener noreferrer">https://maryn-pokedex.herokuapp.com</a> are very different domains.  The same-origin policy automatically blocks all requests that <em>maryn</em> makes to <em>maryn-pokedex</em>.  We have overwritten this with the <code>do_OPTIONS</code> method.  Now, <em>maryn</em> sends a pre-flight request to <em>maryn-pokedex</em> for validation.  In my server, I have allowed for all incoming origins, using the asterisks wildcard.  Finally, the server accepts and processes the request.</p>
 
 <h2>Simple Requests</h2>
 <p>If the request doesn't send a preflight, it is a <em>simple CORS request</em>.  For example, your <em>GET</em>, <em>HEAD</em>, and <em>POST</em> methods.  Your simple request will also not use a ReadableStream object, or send anything other than the aforementioned <code>multipart/form-data</code>.  These requests are generally considered safe, and do not require much more authentication than the <code>Origin</code> header, which is accepted or declined by the server.</p>
@@ -59,5 +59,7 @@
 <p>In October, before I wrote the Pokedex application, I wrote a simple <a href="https://github.com/telepathics/message-log" target="_blank" rel="noopener noreferrer">message log</a> for my Web App class.  I think it gives a great example of how CORS works with simple requests, since the only allowed requests are <code>GET</code> and <code>POST</code>.  It was my introduction to CORS, and the beginning of my API adventures.</p>
 
 <p>This application is also split between server and client, with the server hosted on <a href="https://maryn-message-log.herokuapp.com" target="_blank" rel="noopener noreferrer">https://maryn-message-log.herokuapp.com</a> and the client being hosted on <a href="https://maryn.xyz/message-log" target="_blank" rel="noopener noreferrer">https://maryn.xyz/message-log</a>.  You can also look through the <a href="https://github.com/telepathics/message-log" target="_blank" rel="noopener noreferrer">git repo</a> to see the separated code.</p>
+
+<p class="side-note">This code is not live.  Let's pretend it is.  I forgot how much of a pain it is to host a python web app.</p>
 
 <p>Walking through the <a href="https://github.com/telepathics/message-log/blob/master/server/server.py">server.py</a> code, we can first see that -- god, my organisation is terribly <em>not</em> DRY -- when a <code>POST</code> request is made, the server parses the request, writes the body to my text file, and returns a 201 Created response.  For the <code>GET</code> requests, it simply returns whatever is in that logs.txt file, and sends it back with all the other response headers.  Don't worry, I still have yet to go over the specifics of the request and response headers.</p>

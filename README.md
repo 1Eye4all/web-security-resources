@@ -29,6 +29,7 @@ CSP, X-Frame-Option, X-XSS-Protection kind of stuff. Probably just 5 hours since
 * [What is CSP? Why & How to Add it to Your Website.](https://dev.to/mattferderer/what-is-csp-why--how-to-add-it-to-your-website-28df)
 * [MDN Web Security](https://developer.mozilla.org/en-US/docs/Web/Security)
 * [XSS Cheat Sheet](https://leanpub.com/xss)
+* [XSS Classification](http://www.xssed.com/xssinfo)
 * [Query Parameter Reordering Causes Redirect Page to Render Unsafe URL](https://hackerone.com/reports/293689)
 
 ## TOPIC 5 - Key Negotiation

@@ -63,3 +63,42 @@
 <p class="side-note">This code is not live.  Let's pretend it is.  I forgot how much of a pain it is to host a python web app.</p>
 
 <p>Walking through the <a href="https://github.com/telepathics/message-log/blob/master/server/server.py">server.py</a> code, we can first see that -- god, my organisation is terribly <em>not</em> DRY -- when a <code>POST</code> request is made, the server parses the request, writes the body to my text file, and returns a 201 Created response.  For the <code>GET</code> requests, it simply returns whatever is in that logs.txt file, and sends it back with all the other response headers.  Don't worry, I still have yet to go over the specifics of the request and response headers.</p>
+
+<h2>HTTP Headers</h2>
+<p>HTTP requests send headers back and forth from client to server to hold more specific information about the requests.  Key-value pairs store the data and provide additional instructions to how to handle a request.  There are four categories of headers, namely <em>general</em>, <em>request</em>, <em>response</em>, and <em>entity</em> headers.  Proxies might handle headers end-to-end or hop-by-hop.  The <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers" target="_blank" rel="noopener noreferrer">mozilla documentation</a> on headers is a fantastic resource on learning more about them.</p>
+
+<h3>Request Headers</h3>
+<p>CORS specifically deals with three main HTTP request headers.</p>
+
+<h4>Origin</h4>
+<p>We have talked a lot about this <em>origin</em> key.  Its value will tell the server its URI scheme, host name, and port number.  It will also determine resource access for the Origin.  I probably don't have to reiterate this, but I will, because it is the very basis of the foundation of CORS.  The origin is what will allow or disallow the sharing of a cross-origin resource.</p>
+
+<h4>Access-Control-Request-Method</h4>
+<p>In a preflight request, this will tell the server which HTTP method the client is requesting.  It is a <em>forbidden header name</em>, which means that only the browser can modify the value.  This helps to prevent spoofing or ambient authority attacks.  Its value is the method: <em>GET</em>, <em>POST</em>, <em>DELETE</em>, etc.</p>
+
+<h4>Access-Control-Request-Headers</h4>
+<p>This header is also a forbidden header name.  It specifies headers during the preflight request.  Its value is a comma-separated list of valid HTTP headers.  The one I have used most frequently is <em>Content-Type</em>, since I've mostly experienced using JSON data rather than plaintext.  However, you might also use this to specify redirects, caching, cookies, and message body information.  I'm pretty sure you can request any header from the previously mentioned mozilla list of headers.</p>
+
+
+<h3>Response Headers</h3>
+<p>In response to the requests, CORS specification will send back six HTTP response headers.</p>
+
+<h4>Access-Control-Allow-Origin</h4>
+<p>This is the server's response to the request's <em>Origin</em> header.  The only two allowed directives are a wildcard, or a specific URI.  According to the <a href="https://www.w3.org/TR/cors/#access-control-allow-origin-response-header" target="_blank" rel="noopener noreferrer">W3 CORS documentation</a>, if you want to specify more than one URI, it is better practice to create a list in your server.  This might be done in the <code>.htaccess</code> file.</p>
+
+<h4>Access-Control-Allow-Credentials</h4>
+<p>I used this header generously in my web application classes, especially when dealing with cookies and sessions.  This will tell the client if the page can see the response, and if credentials (cookies, authorization headers, or TLS client certificates) can make the request.  This is particularly important for preflighted requests, and works alongside the credentials sent in the request.  The response will fail if the credentials are invalid in either the header or the XHR/Fetch request.  The only value allowed of this header is <em>true</em>, since the default would be <em>false</em>.</p>
+
+<h4>Access-Control-Expose-Headers</h4>
+<p>By default, your response will display the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Simple_response_header" target="_blank" rel="noopener noreferrer">six simple response headers</a>.  You can allow your response to show even more with a list of header names as the value.  For example, this could be useful if I wanted to debug how to handle a response.  It requires manual overriding for edge cases, and acts as a CORS precaution.</p>
+
+<h4>Access-Control-Max-Age</h4>
+<p>A preflight request has a default cache value of 5 seconds, but the browser sets the maximum amount of allowed cache time.  For example, Firefox only allows for up to 24 hour preflight caching.  More specifically, the cached information is going to be the value of your <em>Access-Control-Allow-Methods</em> and <em>Access-Control-Allow-Headers</em> headers.</p>
+
+<h4>Access-Control-Allow-Methods</h4>
+<p>This is the server's response to the request's <em>Access-Control-Request-Method</em> header in a preflight request.  Therefore, the value of this header would be something like <em>POST</em>, <em>GET</em>, <em>OPTIONS</em>, etc.  If the request's method matches one in this comma-separated list, then it processes the response.</p>
+
+<h4>Access-Control-Allow-Headers</h4>
+<p>By default, the four <a href="https://developer.mozilla.org/en-US/docs/Glossary/simple_header" target="_blank" rel="noopener noreferrer">simple headers</a> are always allowed (Accept, Accept-Language, Content-Language, and Content-Type*).  Everything else must be manually specified.  If the request uses the <em>Access-Control-Request-Headers</em> header, then the response requires the <em>Access-Control-Allow-Headers</em> header.</p>
+
+<p class="side-note">* Remember, we already talked about the default <code>content-type</code> as something similar to MIME type of its parsed value of form or plaintext.</p>

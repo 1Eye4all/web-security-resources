@@ -37,6 +37,7 @@
 
 <img src="https://blog.telepathics.xyz/wp-content/uploads/2018/03/cors_server_flowchart.png" alt="CORS Server Flowchart" width="1534" height="1770" class="alignright size-full wp-image-1168" />
 
+&nbsp;
 <p>The default <code>content-type</code> is going to be either <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code>, or <code>text/plain</code>.  This means that if you want to parse JSON data, the request needs to send a preflight.</p>
 
 <h3>Example: Pokédex Preflight Request & Response</h3>
@@ -102,3 +103,48 @@
 <p>By default, the four <a href="https://developer.mozilla.org/en-US/docs/Glossary/simple_header" target="_blank" rel="noopener noreferrer">simple headers</a> are always allowed (Accept, Accept-Language, Content-Language, and Content-Type*).  Everything else must be manually specified.  If the request uses the <em>Access-Control-Request-Headers</em> header, then the response requires the <em>Access-Control-Allow-Headers</em> header.</p>
 
 <p class="side-note">* Remember, we already talked about the default <code>content-type</code> as something similar to MIME type of its parsed value of form or plaintext.</p>
+
+<h2>CORS Example Project - the Fortune Cookie</h2>
+<p>I already have a <a href="https://maryn.xyz/fortune-cookie" target="_blank" rel="noopener noreferrer">fortune cookie project</a>.  It's simple and an easy example to digest for the topic of this blog post.  It was my first class project for Web App I, so it's fairly basic.  Perfect for being able to see the bare bones of CORS and API interaction.</p>
+
+<h3>The Data</h3>
+<p>If you look through the <a href="https://github.com/telepathics/fortune-cookie" target="_blank" rel="noopener noreferrer">full code</a>, you can see that I have a file called <code>data.JSON</code>.  This isn't actually being used anywhere in this process, I just made it to keep track of the fortunes I want to display.  Essentially, I've copied and pasted this information into <a href="http://myjson.com" target="_blank" rel="noopener noreferrer">myjson.com</a>.  If you wanted to take this a bit further, you could host this in an actual database and parse through the information yourself, as I have done in <a href="https://github.com/telepathics/opus" target="_blank" rel="noopener noreferrer">later projects</a>.</p>
+
+<p>Back to my <code>script.js</code> code, on line 73, you can see my Fetch request for the data.</p>
+
+<img src="https://blog.telepathics.xyz/wp-content/uploads/2018/05/Screen-Shot-2018-05-24-at-1.46.23-PM.png" alt="API fetch request" width="918" height="228" class="alignright size-full wp-image-1191" />
+
+&nbsp;
+<h3>The CORS Request & Response</h3>
+<p>Now, when this code is executed (in this case, when the page is loaded in the browser), we can look at the network tab of the Chrome inspector to see the site's requests and the server's response.</p>
+
+<img src="https://blog.telepathics.xyz/wp-content/uploads/2018/05/Screen-Shot-2018-05-24-at-2.01.32-PM.png" alt="CORS request & response" class="alignright size-full" />
+
+&nbsp;
+<p>In the request, the <code>Origin</code> is <a href="https://maryn.xyz/fortune-cookie" target="_blank" rel="noopener noreferrer">https://maryn.xyz/fortune-cookie</a>.  In the response, the <code>Access-Control-Allow-Origin</code> is a wildcard, so the request is accepted in that regard.</p>
+
+<p>The data is received, and my client creates its own storage of usable fortunes.</p>
+
+<h3>The User Experience</h3>
+<p>When you open up <a href="https://maryn.xyz/fortune-cookie" target="_blank" rel="noopener noreferrer">the page</a>, the request is made immediately in the background, and now my website has the data.  If you click on the fortune cookie, it simply selects a random fortune from the new list.</p>
+
+<p>In this example, my script executes the fetch request, but more than likely, your code will make a fetch request after the user interacts with the page.  If I kept everything in a database instead of in a JSON list, I could have written my script to execute one fetch request per fortune-cookie-click to populate the fortune.  There are endless possibilities to how to do this, but the main focus of using this example in this blog post is to showcase the CORS request and response.</p>
+
+<h2>Security with CORS</h2>
+<p>I just want to take another section to stress <em>again</em> that with CORS, it is necessary that you do a lot of testing to account for validation and protection against certain security exploits.  Test all points of entry, such as input fields.  Consider the headers you are exposing.  Make sure that your client javascript is not vulnerable to code injection.</p>
+
+<p>Poorly-configured CORS headers pose a huge threat to your website.  For example, there was a <a href="https://www.cynet.com/blog-facebook-originull/" target="_blank" rel="noopener noreferrer">Facebook Messenger exploit</a> in 2016, dubbed 'originull'.  It is <em>super</em> important to keep in mind that you are exposing yourself when you deviate from precautions, such as the SOP.  The originull exploit is actually kind of interesting, and I would love to do an in-depth analysis of that in the future.</p>
+
+<h2>Some Final Thoughts</h2>
+<p>Wow, thanks for reading the entire thing.  Or maybe you just skimmed to the final paragraph.  Regardless, I've had a lot of fun looking into the documentation of CORS.  If you have any questions, feel free to ask me, and I will also make sure that this post is generally kept up to date!</p>
+
+<p>Also, I found <a href="https://www.test-cors.org/" target="_blank" rel="noopener noreferrer">this cool site</a> that will help you to test for valid CORS requests, and I will probably be using it as a resource in the future.  There are other ways to relax the Single-Origin Policy, such as <a href="https://www.w3schools.com/js/js_json_jsonp.asp" target="_blank" rel="noopener noreferrer">JSONP</a>, but I believe CORS is the most convenient, and the most pushed for standard.</p>
+
+&nbsp;
+&nbsp;
+love,
+maryn
+
+&nbsp;
+&nbsp;
+<hr/>

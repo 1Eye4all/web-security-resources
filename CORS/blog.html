@@ -8,9 +8,9 @@
 <h3>The Same-Origin Policy Issue</h3>
 <p>The general standard for web requests is to only accept scripts from the same "origin".  This origin consists of:</p>
 <ul>
-	<li>the URI scheme</li>
-	<li>the host name</li>
-	<li>the port number</li>
+    <li>the URI scheme</li>
+    <li>the host name</li>
+    <li>the port number</li>
 </ul>
 <p>Unless otherwise specified, servers block unmatched requests.  This protects our information as a default precaution.  So, what's the problem?  I don't want a random, malicious website to make requests to my bank account.  Well, yeah, I don't want that either.  But I do want <a href="https://maryn.xyz/kitten-adoptions" target="_blank" rel="noopener noreferrer">https://maryn.xyz/kitten-adoptions</a> to make requests to a server I'm hosting on <a href="https://maryns-midterm.herokuapp.com" target="_blank" rel="noopener noreferrer">https://maryns-midterm.herokuapp.com</a>.</p>
 
@@ -29,13 +29,13 @@
 <p><strong>"I'm not using an API."</strong> Ok there, buddy.  You might also need to use CORS to get access to cross-origin fonts, images, videos, and stylesheets.  It's important, okay?</p>
 
 <h2>Pre-Flighted Requests</h2>
-<p>Most (if not all) of the documentation I've read on CORS begins by teaching you about <a href="https://blog.telepathics.xyz/web/websec/cors#simple">simple requests</a>.  However, I thought it would be more beneficial to throw you into the deep end for this blog post.</p>
+<p>Most (if not all) of the documentation I've read on CORS begins by teaching you about <a href="#Simple_Requests">simple requests</a>.  However, I thought it would be more beneficial to throw you into the deep end for this blog post.</p>
 
 <p>A <strong>pre-flight</strong> asks the second domain if the request is safe.  This is done by default through the <code>OPTIONS</code> method, if the request contains (or will affect) sensitive data.  Put simply, these are the <em>PUT, DELETE, PATCH</em> methods of the CRUD operations.</p>
 
 <p>The request <em>must</em> contain a valid <code>Access-Control-Request-Method</code> or a valid <code>Access-Control-Request-Header</code> header.  Then, the server will set the necessary response headers.  Here's a neat flowchart of the process (<a href="https://www.html5rocks.com/en/tutorials/cors/#toc-cors-server-flowchart" target="_blank" rel="noopener noreferrer">source</a>):</p>
 
-<img src="https://blog.telepathics.xyz/wp-content/uploads/2018/03/cors_server_flowchart.png" alt="CORS Server Flowchart" width="1534" height="1770" class="alignright size-full wp-image-1168" />
+<a href="https://blog.telepathics.xyz/wp-content/uploads/2018/03/cors_server_flowchart.png" target="_blank" rel="noopener noreferrer"><img src="https://blog.telepathics.xyz/wp-content/uploads/2018/03/cors_server_flowchart.png" alt="CORS Server Flowchart" width="1534" height="1770" class="alignright size-full wp-image-1168" /></a>
 
 &nbsp;
 <p>The default <code>content-type</code> is going to be either <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code>, or <code>text/plain</code>.  This means that if you want to parse JSON data, the request needs to send a preflight.</p>
@@ -107,18 +107,21 @@
 <h2>CORS Example Project - the Fortune Cookie</h2>
 <p>I already have a <a href="https://maryn.xyz/fortune-cookie" target="_blank" rel="noopener noreferrer">fortune cookie project</a>.  It's simple and an easy example to digest for the topic of this blog post.  It was my first class project for Web App I, so it's fairly basic.  Perfect for being able to see the bare bones of CORS and API interaction.</p>
 
+<a href="https://blog.telepathics.xyz/wp-content/uploads/2018/03/Screen-Shot-2018-05-28-at-10.51.55-AM.png" target="_blank" rel="noopener noreferrer"><img src="https://blog.telepathics.xyz/wp-content/uploads/2018/03/Screen-Shot-2018-05-28-at-10.51.55-AM.png" alt="" width="1948" height="1138" class="alignright size-full wp-image-1223" /></a>
+
+&nbsp;
 <h3>The Data</h3>
 <p>If you look through the <a href="https://github.com/telepathics/fortune-cookie" target="_blank" rel="noopener noreferrer">full code</a>, you can see that I have a file called <code>data.JSON</code>.  This isn't actually being used anywhere in this process, I just made it to keep track of the fortunes I want to display.  Essentially, I've copied and pasted this information into <a href="http://myjson.com" target="_blank" rel="noopener noreferrer">myjson.com</a>.  If you wanted to take this a bit further, you could host this in an actual database and parse through the information yourself, as I have done in <a href="https://github.com/telepathics/opus" target="_blank" rel="noopener noreferrer">later projects</a>.</p>
 
 <p>Back to my <code>script.js</code> code, on line 73, you can see my Fetch request for the data.</p>
 
-<img src="https://blog.telepathics.xyz/wp-content/uploads/2018/05/Screen-Shot-2018-05-24-at-1.46.23-PM.png" alt="API fetch request" width="918" height="228" class="alignright size-full wp-image-1191" />
+<a href="https://blog.telepathics.xyz/wp-content/uploads/2018/05/Screen-Shot-2018-05-24-at-1.46.23-PM.png" target="_blank" rel="noopener noreferrer"><img src="https://blog.telepathics.xyz/wp-content/uploads/2018/05/Screen-Shot-2018-05-24-at-1.46.23-PM.png" alt="API fetch request" width="918" height="228" class="alignright size-full wp-image-1191" /></a>
 
 &nbsp;
 <h3>The CORS Request & Response</h3>
 <p>Now, when this code is executed (in this case, when the page is loaded in the browser), we can look at the network tab of the Chrome inspector to see the site's requests and the server's response.</p>
 
-<img src="https://blog.telepathics.xyz/wp-content/uploads/2018/05/Screen-Shot-2018-05-24-at-2.01.32-PM.png" alt="CORS request & response" class="alignright size-full" />
+<a href="https://blog.telepathics.xyz/wp-content/uploads/2018/05/Screen-Shot-2018-05-24-at-2.01.32-PM.png" target="_blank" rel="noopener noreferrer"><img src="https://blog.telepathics.xyz/wp-content/uploads/2018/05/Screen-Shot-2018-05-24-at-2.01.32-PM.png" alt="CORS request & response" class="alignright size-full" /></a>
 
 &nbsp;
 <p>In the request, the <code>Origin</code> is <a href="https://maryn.xyz/fortune-cookie" target="_blank" rel="noopener noreferrer">https://maryn.xyz/fortune-cookie</a>.  In the response, the <code>Access-Control-Allow-Origin</code> is a wildcard, so the request is accepted in that regard.</p>
@@ -139,6 +142,8 @@
 <p>Wow, thanks for reading the entire thing.  Or maybe you just skimmed to the final paragraph.  Regardless, I've had a lot of fun looking into the documentation of CORS.  If you have any questions, feel free to ask me, and I will also make sure that this post is generally kept up to date!</p>
 
 <p>Also, I found <a href="https://www.test-cors.org/" target="_blank" rel="noopener noreferrer">this cool site</a> that will help you to test for valid CORS requests, and I will probably be using it as a resource in the future.  There are other ways to relax the Single-Origin Policy, such as <a href="https://www.w3schools.com/js/js_json_jsonp.asp" target="_blank" rel="noopener noreferrer">JSONP</a>, but I believe CORS is the most convenient, and the most pushed for standard.</p>
+
+<p>And thanks to my friends <a href="https://lancelotlin.com/" target="_blank" rel="noopener noreferrer">Lancelot</a>, <a href="https://twitter.com/FrostFyres" target="_blank" rel="noopener noreferrer">Eric</a>, and <a href="https://github.com/jschmold" target="_blank" rel="noopener noreferrer">Jonathan</a> for peer-reviewing this post!</p>
 
 &nbsp;
 &nbsp;

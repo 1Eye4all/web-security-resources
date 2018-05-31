@@ -18,6 +18,8 @@ Just planning on going in-depth on the official w3 documentation. Not sure how l
 Rate limiting, canary checks, validation. Will probably spend 11 hours on this as well, since API writing was a huge topic in my other classes.
 * [Best Practices for Designing a Pragmatic RESTful API](https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
 * [10 Best Practices for Better RESTful API](https://blog.mwaysolutions.com/2014/06/05/10-best-practices-for-better-restful-api/)
+* [Secure your REST API the right way](https://stormpath.com/blog/secure-your-rest-api-right-way)
+* [REST Security Cheat Sheet](https://www.owasp.org/index.php/REST_Security_Cheat_Sheet#Sensitive_information_in_HTTP_requests)
 
 ## TOPIC 3 - TLS vs SSL vs HTTPS
 Estimating 6 hours. Just the basics of it, nothing too crazy.  Best practices, how to get set up, etc. About one hour per topic, then an hour for how they all play together.

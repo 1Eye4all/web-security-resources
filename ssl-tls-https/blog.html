@@ -1,0 +1,71 @@
+<p>SSL and TLS are encryption protocols used for security.  For this blog post, I will be talking mostly about its integration with the web Hypertext Transfer Protocol (HTTP).  By running HTTP over SSL/TLS, you enable an extra layer of security in what is commonly known as HTTPS.  Since HTTP is an application layer protocol in the OSI layer model, SSL/TLS acts as a verification middle-man between the application and the server.</p>
+
+<h2>SSL</h2>
+<p>In 1993, Netscape introduced SSL, an encryption protocol that would sit between the TCP and Application layer.  Its purpose was to ensure security between the client and the server, but the first version was actually never released because of its severe bugs and flaws.  The first official release was the second version, released in 1995.  Over time, even more bugs have been fixed, and has been put to rest in 2015.  It is now deprecated, and IEFT released a <a href="https://tools.ietf.org/html/rfc7568" target="_blank" rel="noopener noreferrer">2015 statement</a> announcing that everyone should use TLS instead.</p>
+
+<h3>How SSL works</h3>
+<p>SSL was meant to be the answer to authentication and authorization problems on the web.  Netscape believed that RSA encryption could take care of this, so the SSL handshake was born.  A different key is created for each client and server connection.</p>
+<img src="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_7.1.0/com.ibm.mq.doc/sy10660a.gif" alt="SSL Handshake.  Source: IBM" >
+<p>Message digests were also introduced to detect and prevent data tampering.</p>
+
+<h3>Issues</h3>
+<!-- <p>Key exchange is vulnerable to man-in-the-middle attacks</p> -->
+<!-- <p>Rely on weak algorithms, such as SHA-1 and MD5</p> -->
+<!-- <p>Limited compared to TLS</p> -->
+
+<h2>TLS</h2>
+<!-- <p>Transport Layer Security.  Some history.  Successor of SSL.</p> -->
+
+<h3>Benefits</h3>
+
+<h3>Issues</h3>
+<!-- <p>"Birthday attacks" AKA SWEET32 vulnerability</p> -->
+<blockquote>"With the SWEET32 vulnerability, it is now shown that an attacker can send in large volume of dummy data, and get blocks of cipher text that matches that of a customer.  It is possible because the 64-bit blocks used by 3DES-DES generates a lot of packets, which increases the probability of an encrypted packet of a customer and that of the attacker matching."</blockquote>
+<!-- (source: https://blogs.sap.com/2017/05/07/top-10-ssl-security-vulnerability-and-solution-part-1/) -->
+<!-- <p>fix by disabling DES, 3DS in server, enable AES</p> -->
+
+<h2>HTTPS</h2>
+<!-- <p>HTTP Protocol over SSL/TLS.  Some history.  How it works.  Extra step of protection for requests and other HTTP Activity.</p> -->
+
+<h3>Benefits</h3>
+
+<h3>Issues</h3>
+
+<h2>Certificates</h2>
+<!-- <p>What is and what is in the certificate</p> -->
+
+<h3>Benefits</h3>
+
+<h3>Issues</h3>
+
+<h2>Web Security with HTTPS</h2>
+<!-- <p>Intro</p> -->
+
+<h3>Free Cert Options</h3>
+<!-- <p>Let's Encrypt</p> -->
+<!-- <p>Cloudflare</p> -->
+
+<h3>Monitoring Security</h3>
+<!-- <p>CSP Reports</p> -->
+
+<h2>Implementing HTTPS</h2>
+<!-- <p>Background, intro</p> -->
+
+<h3>Mixed Content Issue</h3>
+<!-- <p>What it means</p> -->
+<!-- <p>Fix with 301 redirects!!!</p> -->
+
+<h3>HSTS</h3>
+<!-- <p>Also protects against KRACK, so link to that article</p> -->
+<!-- <p>preloading</p> -->
+
+<h2>Known HTTPS Security Issues</h2>
+<!-- <p>Serious problems, like cryptographic protocol vulnerabilities in ssl/tls, but can be managed by disabling support for past ssl/tls versions.</p> -->
+<!-- <p>Usually compromise of certificate authority or other spoofing.  man in the middle attacks.  Etc.</p> -->
+
+<h3>Named vulnerabilities</h3>
+<!-- <p>Firesheep</p> -->
+<!-- <p>XKeyscore</p> -->
+
+<h3>Active Network attacks</h3>
+<!-- <p>SSLStrip, upside-down-ternet, arpspoof, dsniff</p> -->

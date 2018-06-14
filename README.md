@@ -25,6 +25,9 @@ Rate limiting, canary checks, validation. Will probably spend 11 hours on this a
 Estimating 6 hours. Just the basics of it, nothing too crazy.  Best practices, how to get set up, etc. About one hour per topic, then an hour for how they all play together.
 * [The 6-Step "Happy Path" to HTTPS](https://www.troyhunt.com/the-6-step-happy-path-to-https/)
 * [SSL & TLS Security Testing](https://www.aptive.co.uk/blog/tls-ssl-security-testing/)
+* [An easy to understand guide](https://www.clickssl.net/blog/an-easy-to-understand-guide-ssl-tls-https-ssl-certificate-and-https)
+* [How to deploy HTTPS correctly](https://www.eff.org/https-everywhere/deploying-https)
+* [SSL TLS guide](https://www.acunetix.com/blog/articles/tls-ssl-terminology-basics-part-3/)
 
 ## TOPIC 4 - Web Traffic Safety
 CSP, X-Frame-Option, X-XSS-Protection kind of stuff. Probably just 5 hours since a lot of related information will be covered in other topics.

@@ -20,11 +20,8 @@
 <p>I already mentioned that SSL relied on weak algorithms.  TLS v1.3 has removed support for MD5 and SHA-224 hash functions, and continues to push for even stronger options.  We saw SSL's attempt to protect data with message digests, and now TLS also uses more secure key HMAC to avoid data tampering.  The "Enhanced Pseudorandom Function" is also used to generate key data, using two hash algorithms to increase security.</p>
 
 <h3>Issues</h3>
-<!-- <p>"Birthday attacks" AKA SWEET32 vulnerability</p> -->
-<blockquote>"With the SWEET32 vulnerability, it is now shown that an attacker can send in large volume of dummy data, and get blocks of cipher text that matches that of a customer.  It is possible because the 64-bit blocks used by 3DES-DES generates a lot of packets, which increases the probability of an encrypted packet of a customer and that of the attacker matching."</blockquote>
-<!-- (source: https://blogs.sap.com/2017/05/07/top-10-ssl-security-vulnerability-and-solution-part-1/) -->
-<!-- <p>fix by disabling DES, 3DS in server, enable AES</p> -->
-<!-- <p>POODLE and BEAST and FREAK</p> -->
+<p>There have been a couple of cryptographic exploits, such as the <a href="https://sweet32.info" target="_blank" rel="noopener noreferrer">SWEET32/Birthday Attacks</a>, <a href="https://www.contextis.com/blog/server-technologies-https-beast-attack" target="_blank" rel="noopener noreferrer">BEAST</a>, and <a href="https://censys.io/blog/freak" target="_blank" rel="noopener noreferrer">FREAK</a>.  The basic fix for these kinds of vulnerabilities is to disable weak SSL ciphers, and enable strong ones.  There are also issues in RSA and other key negotiations.</p>
+<p>I will go into further vulnerability deetails in the <a href="#named-vulnerabilities">named-vulnerabilities</a> section.</p>
 
 <h2>HTTPS</h2>
 <!-- <p>HTTP Protocol over SSL/TLS.  Some history.  How it works.  Extra step of protection for requests and other HTTP Activity.</p> -->
@@ -67,9 +64,15 @@
 <!-- <p>Serious problems, like cryptographic protocol vulnerabilities in ssl/tls, but can be managed by disabling support for past ssl/tls versions.</p> -->
 <!-- <p>Usually compromise of certificate authority or other spoofing.  man in the middle attacks.  Etc.</p> -->
 
-<h3>Named vulnerabilities</h3>
-<!-- <p>Firesheep</p> -->
-<!-- <p>XKeyscore</p> -->
+<h3>Named SSL/TLS/HTTPS Attacks</h3>
+<p>Aside from POODLE, I have also mentioned SWEET32, FREAK, and BEAST.  Let's talk about those a little more.</p>
+<h4>SWEET32 / Birthday Attacks</h4>
+<p>I love Javascript.  It's so versatile.  Its powers can be used for good and evil.  Essentially, with the <a href="" target="_blank" rel="noopener noreferrer">SWEET32</a> vulnerability, an attacker can inject Javascript to override the "secure" flag on cookies.  This is definitely a man-in-the-middle attack, since the attacker intercepts the HTTPS connnection, especially during  <a href="https://blog.telepathics.xyz/web/websec/cors">cross-site</a> scripting.</p>
+<blockquote>"With the SWEET32 vulnerability, it is now shown that an attacker can send in large volume of dummy data, and get blocks of cipher text that matches that of a customer.  It is possible because the 64-bit blocks used by 3DES-DES generates a lot of packets, which increases the probability of an encrypted packet of a customer and that of the attacker matching."</blockquote>
+<p>- <a href="https://blogs.sap.com/2017/05/07/top-10-ssl-security-vulnerability-and-solution-part-1/" target="_blank" rel="noopener noreferrer">sap</a></p>
+
+<h4>BEAST (Browser Exploit Against SSL/TLS)</h4>
+<p>In September 2011, cipher-block-chaining was exploited in the SSL protocol that enabled decryption during authentication token passing in the web server and browser.  </p>
 
 <h3>Active Network attacks</h3>
 <!-- <p>SSLStrip, upside-down-ternet, arpspoof, dsniff</p> -->

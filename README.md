@@ -1,5 +1,6 @@
 # WEB 4900r
 Independent Research - web security.
+Inspired by: https://github.com/qazbnm456/awesome-web-security
 
 ## TOPIC 1 - CORS
 Just planning on going in-depth on the official w3 documentation. Not sure how long this will take, but I’m going to estimate about 11 hours. I’ve had a lot of CORS issues with past web dev projects, so I really want to learn this inside & out. I want to dedicate the whole first week to it, at least.
